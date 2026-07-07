@@ -19,9 +19,10 @@ docs/SUBMISSION.md                 # 과제 제출 문서 (유저/기획/PoC/판
 
 ## 배포 (Vercel)
 
-1. 이 레포를 Vercel에 연결 (Framework: Other, 빌드 명령 없음)
+1. Vercel 대시보드 → **Add New Project** → GitHub `iluv4/lovedovey` 연결 (Framework: Other, 빌드 명령 없음)
+   - 또는 기존 `tain-loveydovey-prototype` 프로젝트의 Git 연결을 이 레포로 교체
 2. 환경변수 설정: `ANTHROPIC_API_KEY`
-3. 프로젝트 → Analytics 탭에서 **Enable Analytics**
+3. 프로젝트 → **Analytics** 탭에서 **Enable** (스크립트는 이미 코드에 포함됨)
 
 키가 없으면 통화는 "연결 불안정" 폴백 멘트로 동작하고, 인생네컷은 키 없이도 완전히 동작합니다.
 
