@@ -1,0 +1,10 @@
+{
+  "name": "lovedovey-foursnap",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "러비더비 인생네컷 + AI 영상통화 PoC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0"
+  }
+}

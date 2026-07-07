@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>러비더비 랩 · AI 영상통화 & 인생네컷</title>
+<meta name="description" content="러비더비 AI 연인과 실시간 영상통화하고, 그 순간을 인생네컷으로 남겨요." />
+<meta property="og:title" content="러비더비 — 내 AI 연인과 통화하고, 네컷으로 남기기" />
+<meta property="og:description" content="실시간 AI 영상통화 → 인생네컷. 러비더비 랩 PoC." />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= 랜딩 ================= -->
+  <section class="screen is-active" data-screen="landing">
+    <div class="landing">
+      <div class="landing__badge">러비더비 <span>lab</span></div>
+      <h1 class="landing__title">내 AI 연인과<br /><em>통화하고, 남기다</em></h1>
+      <p class="landing__sub">실시간으로 대화하는 AI 영상통화,<br />그리고 그 순간을 담는 인생네컷.</p>
+
+      <div class="landing__cards">
+        <button class="entry" data-action="go-call">
+          <span class="entry__emoji">📞</span>
+          <span class="entry__name">AI 영상통화</span>
+          <span class="entry__desc">음성으로 진짜 대화해요</span>
+        </button>
+        <button class="entry" data-action="go-foursnap">
+          <span class="entry__emoji">📸</span>
+          <span class="entry__name">AI 인생네컷</span>
+          <span class="entry__desc">둘이 찍은 네컷 만들기</span>
+        </button>
+      </div>
+      <p class="landing__note">채용 과제 PoC · 대화는 Claude가 실시간 생성합니다</p>
+    </div>
+  </section>
+
+  <!-- ================= 파트너 선택 ================= -->
+  <section class="screen" data-screen="partner">
+    <header class="flowbar">
+      <button class="flowbar__back" data-action="back-landing" aria-label="뒤로">‹</button>
+      <div class="flowbar__title">상대 고르기</div>
+      <div class="flowbar__spacer"></div>
+    </header>
+    <div class="step is-active">
+      <h2 class="step__title">💗 누구랑 함께할까요?</h2>
+      <p class="step__desc">선택한 AI 연인이 통화와 네컷에 함께해요.</p>
+      <div class="partners" id="partners"></div>
+      <button class="btn btn--primary step__next" id="partnerNext" disabled>선택 완료</button>
+    </div>
+  </section>
+
+  <!-- ================= 영상통화 ================= -->
+  <section class="screen screen--call" data-screen="call">
+    <div class="call">
+      <img class="call__video" id="callVideo" alt="" />
+      <div class="call__veil"></div>
+
+      <header class="call__top">
+        <div class="call__peer">
+          <div class="call__name" id="callName">유리</div>
+          <div class="call__status" id="callStatus">연결 중…</div>
+        </div>
+        <div class="call__timer" id="callTimer">00:00</div>
+      </header>
+
+      <div class="call__captions" id="captions"></div>
+
+      <div class="call__cta" id="foursnapCta" hidden>
+        <button class="btn btn--accent" data-action="cta-foursnap">📸 지금 인생네컷 찍기</button>
+      </div>
+
+      <footer class="call__dock">
+        <input class="call__input" id="textInput" type="text" placeholder="말로 하거나, 여기에 입력…" autocomplete="off" />
+        <button class="dockbtn dockbtn--mic" id="micBtn" aria-label="말하기">🎙️</button>
+        <button class="dockbtn dockbtn--end" data-action="end-call" aria-label="통화 종료">✕</button>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ================= 네컷 플로우 ================= -->
+  <section class="screen" data-screen="foursnap">
+    <header class="flowbar">
+      <button class="flowbar__back" data-action="back-foursnap" aria-label="뒤로">‹</button>
+      <div class="steps" id="steps"></div>
+      <div class="flowbar__spacer"></div>
+    </header>
+
+    <!-- Step 1: 셀피 -->
+    <div class="step" data-step="selfie">
+      <h2 class="step__title">📸 셀피를 올려주세요</h2>
+      <p class="step__desc">얼굴이 잘 나온 정면 사진이면 충분해요. 사진은 브라우저 밖으로 나가지 않아요.</p>
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/*" hidden />
+        <div class="dropzone__inner" id="dropzoneInner">
+          <div class="dropzone__icon">＋</div>
+          <div class="dropzone__text">사진 선택 / 카메라</div>
+        </div>
+      </label>
+      <button class="btn btn--ghost" data-action="skip-selfie">사진 없이 진행 (AI 연인 단독컷)</button>
+      <button class="btn btn--primary step__next" id="selfieNext" disabled>다음</button>
+    </div>
+
+    <!-- Step 2: 컨셉 -->
+    <div class="step" data-step="concept">
+      <h2 class="step__title">🎨 컨셉을 정해요</h2>
+      <p class="step__desc">네컷의 무드와 색감을 결정해요.</p>
+      <div class="concepts" id="concepts"></div>
+      <button class="btn btn--primary step__next" data-action="generate">인생네컷 만들기 ✨</button>
+    </div>
+
+    <!-- Step 3: 결과 -->
+    <div class="step" data-step="result">
+      <div class="result">
+        <div class="result__stage">
+          <div class="loader" id="loader">
+            <div class="loader__ring"></div>
+            <p class="loader__text" id="loaderText">필름 현상 중…</p>
+          </div>
+          <canvas id="canvas" width="640" height="1640" hidden></canvas>
+        </div>
+        <div class="result__actions" id="resultActions" hidden>
+          <button class="btn btn--primary" data-action="download">📥 저장</button>
+          <button class="btn btn--accent" data-action="share">🔗 공유</button>
+          <button class="btn btn--ghost" data-action="restart">🔄 처음부터</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
